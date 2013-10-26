@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class MinesweeperSimulator extends JFrame{
-
 	private static JTextField field[];
 	private static JLabel label[];
 
@@ -52,5 +51,9 @@ public class MinesweeperSimulator extends JFrame{
 		JPanel menu = makeMenu();
 		frame.add(grid, BorderLayout.CENTER); grid.updateUI();
 		frame.add(menu, BorderLayout.EAST); menu.updateUI();
+	}
+
+	private openField(Point location){
+
 	}
 }
