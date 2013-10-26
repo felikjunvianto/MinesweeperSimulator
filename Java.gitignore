@@ -1,0 +1,7 @@
+# taken from https://github.com/github/gitignore #
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
