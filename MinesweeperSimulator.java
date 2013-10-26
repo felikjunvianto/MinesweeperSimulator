@@ -47,11 +47,10 @@ public class MinesweeperSimulator extends JFrame{
 
 	public static void main(String args[]){
 		MinesweeperSimulator frame = new MinesweeperSimulator();
-		
+
 		Field grid = new Field();
 		JPanel menu = makeMenu();
 		frame.add(grid, BorderLayout.CENTER); grid.updateUI();
 		frame.add(menu, BorderLayout.EAST); menu.updateUI();
-
 	}
 }
