@@ -1,3 +1,5 @@
+import java.awt.Point;
+
 public class Agent{
 	/////////////////////////////////////
 	// some built-in stuff for you
@@ -31,6 +33,8 @@ public class Agent{
 				}
 			}
 		}
+
+		return new Point(1, 1);
 	}
 	/////////////////////////////////////
 
