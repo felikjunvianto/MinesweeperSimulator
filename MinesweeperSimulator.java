@@ -16,8 +16,10 @@ public class MinesweeperSimulator extends JFrame{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.setSize(700, 500);
-		
+
 		Field a = new Field();
 		frame.add(a);
+
+		frame.remove(a);
 	}
 }
