@@ -19,7 +19,7 @@ public class Agent{
 		return map[0].length;
 	}
 	// for demo purpose only
-	private Point randomPick(int[][] map){
+	private Point mostUpperLeft(int[][] map){
 		int r = getRow(map);
 		int c = getColumn(map);
 		for (int i = 0; i < r; i++){
@@ -40,7 +40,7 @@ public class Agent{
 	// TODO: here is your implementation 
 	/////////////////////////////////////
 	public Point getNextOpenedField(int[][] map){
-		// random demo, just for fun :)
-		return randomPick(map);
+		// demo, just for fun :)
+		return mostUpperLeft(map);
 	}
 }
