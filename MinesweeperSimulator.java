@@ -8,11 +8,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class MinesweeperSimulator extends JFrame{
-	private static JTextField field[];
-	private static JLabel label[];
+public class MinesweeperSimulator extends JFrame {
+	private final int NUM_MENU = 5;
+	public JTextField field[];
+	public JLabel label[];
+	public int mineField[][];
 
 	public MinesweeperSimulator() {
+		field = new JTextField[NUM_MENU];
+		label = new JLabel[NUM_MENU];
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		setSize(700, 500);
@@ -20,17 +25,16 @@ public class MinesweeperSimulator extends JFrame{
 		setLayout(new BorderLayout());
 	}
 
-	private static JPanel makeMenu() {
+	private JPanel makeMenu() {
 		JPanel ret = new JPanel();
 		ret.setLayout(new BorderLayout());
 		
 		JPanel textFieldMenu = new JPanel();
-		textFieldMenu.setLayout(new GridLayout(5, 2));
-		field = new JTextField[5];
-		label = new JLabel[5];
+		textFieldMenu.setLayout(new GridLayout(NUM_MENU, 2));
+		
 		String labelName[] = {"Width", "Height", "Mines", "Seed", "Interval (ms)"};
 
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < NUM_MENU; i++) {
 			field[i] = new JTextField();
 			label[i] = new JLabel(labelName[i]);
 
@@ -48,7 +52,7 @@ public class MinesweeperSimulator extends JFrame{
 		MinesweeperSimulator frame = new MinesweeperSimulator();
 
 		Field grid = new Field();
-		JPanel menu = makeMenu();
+		JPanel menu = frame.makeMenu();
 		frame.add(grid, BorderLayout.CENTER); grid.updateUI();
 		frame.add(menu, BorderLayout.EAST); menu.updateUI();
 	}
