@@ -153,6 +153,7 @@ public class MinesweeperSimulator extends JFrame {
 		if (mineField[i][j] == -2){
 			if (containsMine[i][j]){
 				// game ends
+				System.out.println("Game over!");
 				timer.stop();		
 				timer.removeActionListener(timerListener);
 				timerListener = null;

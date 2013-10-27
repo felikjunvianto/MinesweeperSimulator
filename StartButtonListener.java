@@ -42,7 +42,7 @@ public class StartButtonListener implements ActionListener{
 			container.startSolving();
 
 		}catch (Exception e){
-			// do nothing
+			System.out.println("some constraint are not valid!");
 		}
 	}
 
