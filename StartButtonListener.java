@@ -47,8 +47,8 @@ public class StartButtonListener implements ActionListener{
 	}
 
 	private boolean valid(int row, int column, int mines, Long seed, int interval){
-		return ((3 <= row ) && (row <= 100) &&
-			    (3 <= column) && (column <= 100) &&
+		return ((3 <= row ) && (row <= 30) &&
+			    (3 <= column) && (column <= 30) &&
 			    (1 <= mines) && (mines <= row*column-10) &&
 			    (100 <= interval));
 	}
