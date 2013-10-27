@@ -11,7 +11,7 @@ public class StartButtonListener implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent event){
-		try{
+		/*try{
 			int width = Integer.parseInt(container.field[0].getText());
 			int height = Integer.parseInt(container.field[1].getText());
 			int mines = Integer.parseInt(container.field[2].getText());
@@ -36,6 +36,6 @@ public class StartButtonListener implements ActionListener{
 
 		}catch (Exception e){
 			// do nothing
-		}
+		}*/
 	}
 }
