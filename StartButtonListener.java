@@ -1,13 +1,16 @@
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Random;
 
 public class StartButtonListener implements ActionListener{
-	private final int BASE_WIDTH = 120;
-	private final int BASE_HEIGHT = 20;
+	private final int BASE_WIDTH = 180;
+	private final int BASE_HEIGHT = 40;
 	private MinesweeperSimulator container;
+	private Random random;
 
 	public StartButtonListener(MinesweeperSimulator container){
 		this.container = container;
+		random = new Random();
 	}
 
 	public void actionPerformed(ActionEvent event){
@@ -29,13 +32,24 @@ public class StartButtonListener implements ActionListener{
 			container.mines = mines;
 			container.width = width;
 			container.height = height;
-			container.seed = seed;
+			container.interval = interval;
 
+			if (seed < 0){
+				container.seed = random.nextLong();	
+			}
+			
 			// invoke timer event
-			container.startTimer();
+			container.startSolving();
 
 		}catch (Exception e){
 			// do nothing
 		}
+	}
+
+	private boolean valid(int row, int column, int mines, Long seed, int interval){
+		return ((3 <= row ) && (row <= 100) &&
+			    (3 <= column) && (column <= 100) &&
+			    (1 <= mines) && (mines <= row*column-10) &&
+			    (100 <= interval));
 	}
 }

@@ -4,14 +4,10 @@ public class Agent{
 	/////////////////////////////////////
 	// some built-in stuff for you
 	/////////////////////////////////////
-	private final int MINE = -1;
 	private final int UNOPENED = -2;
 
 	private boolean isNumber(int value){
 		return (0 <= value) && (value <= 8);
-	}
-	private boolean isMine(int value){
-		return (value == MINE);
 	}
 	private boolean isUnopened(int value){
 		return (value == UNOPENED);
@@ -29,11 +25,12 @@ public class Agent{
 		for (int i = 0; i < r; i++){
 			for (int j = 0; j < c; j++){
 				if (isUnopened(map[i][j])){
+					System.out.println(i + " " + j);
 					return new Point(i,j);
 				}
 			}
 		}
-
+		// default
 		return new Point(1, 1);
 	}
 	/////////////////////////////////////
