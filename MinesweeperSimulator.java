@@ -12,11 +12,15 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 
 public class MinesweeperSimulator extends JFrame {
+	public final int BASE_WIDTH = 250;
+	public final int BASE_HEIGHT = 28;
 	private final int NUM_MENU = 5;
 	private final int UNOPENED = -2;
 
 	public Field grid;
 	public JTextField field[];
+	public JTextField currentSeedDisplay;
+	public JTextField currentOpenedField;
 	public JLabel label[];
 	public JButton startButton;
 	public int mineField[][];
@@ -41,7 +45,7 @@ public class MinesweeperSimulator extends JFrame {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		setSize(280 + 180, 280 + 40);
+		setSize(280 + BASE_WIDTH, 280 + BASE_HEIGHT);
 		setTitle("Minesweeper Simulator");
 		setLayout(new BorderLayout());
 	}
@@ -70,12 +74,25 @@ public class MinesweeperSimulator extends JFrame {
 		field[3].setText("-1");
 		field[4].setText("1000");
 
+		JPanel actionMenu = new JPanel();
+		actionMenu.setLayout(new GridLayout(3, 1));
+
 		startButton = new JButton("Start");
 		startButtonListener = new StartButtonListener(this);
 		startButton.addActionListener(startButtonListener);
 
+		currentSeedDisplay = new JTextField("current seed: __________________________");
+		currentSeedDisplay.setEditable(false);
+
+		currentOpenedField = new JTextField("opened: ?");
+		currentOpenedField.setEditable(false);
+
+		actionMenu.add(startButton);
+		actionMenu.add(currentSeedDisplay);
+		actionMenu.add(currentOpenedField);
+
 		ret.add(textFieldMenu, BorderLayout.CENTER);
-		ret.add(startButton, BorderLayout.SOUTH);
+		ret.add(actionMenu, BorderLayout.SOUTH);
 
 		return ret;
 	}
@@ -86,6 +103,10 @@ public class MinesweeperSimulator extends JFrame {
 	}
 
 	public void startSolving(){
+		if (timerListener != null){
+			timer.removeActionListener(timerListener);
+		}
+
 		timerListener = new TimerListener(this);
 		timer = new Timer(interval, timerListener);
 		mineField = new int[height][width];
@@ -100,6 +121,9 @@ public class MinesweeperSimulator extends JFrame {
 				containsMine[i][j] = false;
 			}
 		}
+
+		currentSeedDisplay.setText("current seed: " + seed);
+		currentSeedDisplay.updateUI();
 
 		System.out.println("game start!");
 		timer.start();
@@ -131,6 +155,7 @@ public class MinesweeperSimulator extends JFrame {
 				// game ends
 				timer.stop();		
 				timer.removeActionListener(timerListener);
+				timerListener = null;
 
 				// display all mines
 				for (int ii = 0; ii < height; ii++){
@@ -151,6 +176,17 @@ public class MinesweeperSimulator extends JFrame {
 				}
 			}
 		}
+
+		// update opened field
+		int total = 0;
+		for (int ii = 0; ii < height; ii++){
+			for (int jj = 0; jj < width; jj++){
+				if (mineField[ii][jj] != UNOPENED && !containsMine[ii][jj]){
+					total++;
+				}
+			}
+		}
+		currentOpenedField.setText("Opened: " + total);
 
 		// redraw
 		grid.draw(mineField);

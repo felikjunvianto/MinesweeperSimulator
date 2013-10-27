@@ -25,7 +25,7 @@ public class Agent{
 		for (int i = 0; i < r; i++){
 			for (int j = 0; j < c; j++){
 				if (isUnopened(map[i][j])){
-					System.out.println(i + " " + j);
+					System.out.println("Opening " + i + " " + j);
 					return new Point(i,j);
 				}
 			}

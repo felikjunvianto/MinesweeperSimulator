@@ -3,8 +3,6 @@ import java.awt.event.ActionEvent;
 import java.util.Random;
 
 public class StartButtonListener implements ActionListener{
-	private final int BASE_WIDTH = 180;
-	private final int BASE_HEIGHT = 40;
 	private MinesweeperSimulator container;
 	private Random random;
 
@@ -26,7 +24,7 @@ public class StartButtonListener implements ActionListener{
 			}
 
 			// resize window
-			container.setSize(BASE_WIDTH + 28*width, BASE_HEIGHT + 28*height);
+			container.setSize(container.BASE_WIDTH + 28*width, container.BASE_HEIGHT + 28*height);
 			
 			// send current information
 			container.mines = mines;
@@ -36,6 +34,8 @@ public class StartButtonListener implements ActionListener{
 
 			if (seed < 0){
 				container.seed = random.nextLong();	
+			}else{
+				container.seed = seed;
 			}
 			
 			// invoke timer event
