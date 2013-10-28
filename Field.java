@@ -20,12 +20,14 @@ public class Field extends JComponent{
 			for (int j = 0; j < c; j++){
 				Image img;
 
-				if (map[i][j] == -2){
-					img = kit.getImage("asset/field_unopened.png");
-				}else if (map[i][j] == -1){
+				if (map[i][j] == -1){
 					img = kit.getImage("asset/field_mine.png");
+				}else if (map[i][j] == -2){
+					img = kit.getImage("asset/field_unopened.png");
 				}else if (map[i][j] == -3){
 					img = kit.getImage("asset/field_minehit.png");
+				}else if (map[i][j] == -4){
+					img = kit.getImage("asset/field_flag.png");
 				}else{
 					img = kit.getImage("asset/field_" + map[i][j] + ".png");
 				}

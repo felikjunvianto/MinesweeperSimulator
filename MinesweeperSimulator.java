@@ -189,6 +189,23 @@ public class MinesweeperSimulator extends JFrame {
 		}
 		currentOpenedField.setText("Opened: " + total);
 
+		// win?
+		if (total == width*height-mines){
+			timer.stop();		
+			timer.removeActionListener(timerListener);
+			timerListener = null;
+
+			// display all mines, flagged
+			for (int ii = 0; ii < height; ii++){
+				for (int jj = 0; jj < width; jj++){
+					if (containsMine[ii][jj]){
+						mineField[ii][jj] = -4;
+					}
+				}
+			}
+			System.out.println("Game over! You won!");
+		}
+
 		// redraw
 		grid.draw(mineField);
 	}
