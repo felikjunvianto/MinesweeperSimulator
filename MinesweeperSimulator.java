@@ -141,7 +141,7 @@ public class MinesweeperSimulator extends JFrame {
 					r = Math.abs(random.nextInt()) % height;
 					c = Math.abs(random.nextInt()) % width;
 				//	System.out.println(r + " " + c);
-				} while (containsMine[r][c] || ((r == i) && (c == j)));
+				} while (containsMine[r][c] || ((Math.abs(r - i) <= 1) && (Math.abs(c-j) <= 1)));
 
 				// here is mine!
 				containsMine[r][c] = true;
