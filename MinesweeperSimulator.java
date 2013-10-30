@@ -12,8 +12,8 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 
 public class MinesweeperSimulator extends JFrame {
-	public final int BASE_WIDTH = 250;
-	public final int BASE_HEIGHT = 28;
+	public final int BASE_WIDTH = 270;
+	public final int BASE_HEIGHT = 48;
 	private final int NUM_MENU = 5;
 	private final int UNOPENED = -2;
 
