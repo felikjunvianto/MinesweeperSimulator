@@ -32,7 +32,7 @@ public class StartButtonListener implements ActionListener{
 			container.height = height;
 			container.interval = interval;
 
-			if (seed < 0){
+			if (seed == -1){
 				container.seed = random.nextLong();	
 			}else{
 				container.seed = seed;
