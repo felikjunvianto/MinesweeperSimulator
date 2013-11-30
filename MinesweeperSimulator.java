@@ -68,11 +68,11 @@ public class MinesweeperSimulator extends JFrame {
 		}
 
 		// default values
-		field[0].setText("10");
-		field[1].setText("10");
-		field[2].setText("20");
+		field[0].setText("16");
+		field[1].setText("16");
+		field[2].setText("40");
 		field[3].setText("-1");
-		field[4].setText("1000");
+		field[4].setText("500");
 
 		JPanel actionMenu = new JPanel();
 		actionMenu.setLayout(new GridLayout(3, 1));
@@ -187,7 +187,9 @@ public class MinesweeperSimulator extends JFrame {
 				}
 			}
 		}
-		currentOpenedField.setText("Opened: " + total);
+		double percentage = (double)total/(width*height-mines);
+		percentage = Math.floor(percentage * 10000)/100;
+		currentOpenedField.setText("Opened: " + percentage + "%");
 
 		// win?
 		if (total == width*height-mines){

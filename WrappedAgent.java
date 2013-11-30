@@ -1,16 +1,16 @@
 import java.awt.Point;
-import java.util.Scanner;
+import java.util.*;
 
 public class WrappedAgent{
 	private Scanner reader;
 	private int _row;
 	private int _column;
-	private final double EPS = 1e-8;
-
-	/////////////////////////////////////
-	// some built-in stuff for you
-	/////////////////////////////////////
+	
 	private final int UNOPENED = -2;
+	private final int UNKNOWN = 0;
+	private final int MINE = 1;
+	private final int SAFE = 2;
+	private final double EPS = 1e-8;
 
 	private boolean isNumber(int value){
 		return (0 <= value) && (value <= 8);
@@ -31,6 +31,7 @@ public class WrappedAgent{
 		for (int i = 0; i < r; i++){
 			for (int j = 0; j < c; j++){
 				if (isUnopened(map[i][j])){
+					System.out.println("Opening " + i + " " + j);
 					return new Point(i,j);
 				}
 			}
@@ -40,13 +41,8 @@ public class WrappedAgent{
 	}
 	/////////////////////////////////////
 
-
-	/////////////////////////////////////
-	// TODO: here is your implementation 
-	/////////////////////////////////////
 	public Point getNextOpenedField(int[][] map){
-		// demo, just for fun :)
-		return mostUpperLeft(map);
+		return mostUpperLeft(map);	
 	}
 
 	public void work(){
