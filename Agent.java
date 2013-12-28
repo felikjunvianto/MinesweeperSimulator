@@ -82,10 +82,14 @@ public class Agent{
 
 			// transforms map into equation
 			double[][] equation = new double[r*c][r*c + 1];
+			//catat koordinat berapa di suatu baris pada matriks persamaan
+			int[][] koord = new int[r*c][2];
 			int id = 0;
 			for (int i = 0; i < r; i++){
 				for (int j = 0; j < c; j++){
-					if ((map[i][j] != UNOPENED) && (map[i][j] != 0)){
+					if ((map[i][j] != UNOPENED) && (map[i][j] != UNKNOWN)){
+						koord[id][0]=i;
+						koord[id][1]=j;
 						fillEquation(equation[id], i,j, map[i][j]);
 						id++;
 					}
@@ -93,13 +97,13 @@ public class Agent{
 			}
 
 			// get informations before
-			extractInfo(equation);
+			extractInfo(equation,koord,id);
 
 			// do elemination
 			reduce(equation);
 
 			// get informations
-			extractInfo(equation);
+			extractInfo(equation,koord,id);
 
 
 			if (DEBUG){
@@ -170,97 +174,123 @@ public class Agent{
 		}
 		vector[vector.length - 1] = val;
 	}
+	
+	private void swap(double[][] equ, int a, int b) {
+		double z;
+		for(int i = 0; i < equ[1].length; i++) {
+			z = equ[a][i];
+			equ[a][i] = equ[b][i];
+			equ[b][i] = z;
+		}
+	}
 
 	private void reduce(double[][] m){
-		int l = 0;
-		int lastTreated = -1;
-		int p = 0;
-		boolean[] sure = new boolean[r*c];
-
-		// for each column
-		for (int j = 0; j < r*c; j++){
-			boolean empty = true;
-			for (int i = p; i < r*c; i++){
-				if (Math.abs(m[i][j]) > EPS){
-					l = i;
-					empty = false;
+		int lastId = 0;
+		// cari elemen bukan nol pertama di setiap baris
+		for(int j = 0; j < m[1].length-1; j++) {
+			boolean ada = false;
+			for(int i = lastId; i < m.length; i++) {
+				if(Math.abs(m[i][j]) > EPS) {
+					swap(m, i, lastId);
+					ada = true;
 					break;
 				}
 			}
-			if (empty){
-				// nothing to do here
+			if(!ada) {
 				continue;
 			}
+			for(int i = lastId+1; i < m.length; i++) {
+				double k = m[i][j] / m[lastId][j];
+				for(int z = j; z < m[1].length; z++) {
+					m[i][z] = m[i][z] - k*m[lastId][z];
+				}
+			}
+			lastId++;
+		}
+
+		int ctr = 0;
+		for (int i = 0; i < m[1].length-1; i++) {
+			if (Math.abs(m[lastId-1][i]) > EPS) {
+				ctr++;
+			}
+		}
+
+		if(ctr > 1)
+			return;
+
+		for (int i = lastId-1; i >= 0; i--) {
+			int pos = 0;
+			ctr = 0;
+			for(int j = 0; j < m[1].length-1; j++) {
+				if(Math.abs(m[i][j]) > EPS) {
+					pos = j;
+					ctr++;
+				}
+			}
+
+			if(ctr > 1) {
+				continue;
+			}
+
+			m[i][m[i].length-1] /= m[i][pos];
+			m[i][pos] = 1;
+
+			for(int j = 0; j < i-1; j++) {
+				double k = m[j][pos] / m[i][pos];
+				m[j][pos] = m[j][pos] - k*m[i][pos];
+				m[j][m[1].length-1] -= k*m[i][m[1].length-1];
+			}
+		}
+	}
+
+	private void extractInfo(double[][] m,int[][] translator,int lim){
+		int rr = lim; // banyak persamaan		
+		int cc = m[0].length;
+		for(int ii=0;ii<rr;ii++){
+			int koorX = translator[ii][0];
+			int koorY = translator[ii][1];
 			
-			// swap row
-			for (int k = j; k <= r*c; k++){
-				double t = m[p][k];
-				m[p][k] = m[l][k];
-				m[l][k] = t;
-			}
-
-			for (int i = p+1; i < r*c; i++){
-				for (int k = r*c; k >= j; k--){
-					m[i][k] -= m[p][k] * m[i][j] / m[p][j];
+			int neighbor[][] = new int[8][2];
+			int count=0;
+			int idx=0;
+			
+			//daftarkan index neighbor
+			for(int aa=-1;aa<=1;aa++){
+				for(int bb=-1;bb<=1;bb++){
+					if(aa==0 && bb==0)continue;
+					
+					int ni = koorX + aa;
+					int nj = koorY + bb;
+					//if ((0 <= ni) && (ni < r) && (0 <= nj) && (nj < c)){
+						neighbor[idx][0]=ni;
+						neighbor[idx++][1]=nj;
+					//}
 				}
 			}
-
-			lastTreated = p;
-			p++;
-		}
-		// can proceed?
-		boolean singeSolution = false;
-		if (lastTreated != -1){
-			int cnt = 0;
-			for (int j = 0; j < r*c; j++){
-				if (Math.abs(m[lastTreated][j]) > EPS){
-					cnt++;
-				}
-			}
-			if (cnt == 1){
-				singeSolution = true;
-			}
-		}
-
-		if (singeSolution){
-			// push up
-			for (int j = lastTreated; j >= 0; j--){
-				int mainId = -1;
-				for (int k = 0; k < r*c; k++){
-					if (Math.abs(m[j][k]) > EPS){
-						mainId = k;
-						break;
+			
+			//Kalo paling kanan 0 (aman semua)
+			if(m[ii][cc-1]==0){
+				for(int aa=0;aa<8;aa++){
+					if((0 <= neighbor[aa][0]) && (neighbor[aa][0] < r) && (0 <= neighbor[aa][1]) && (neighbor[aa][1] < c) && m[ii][toLinear(neighbor[aa][0],neighbor[aa][1])]==1){
+						safePool.add(new Point(neighbor[aa][0],neighbor[aa][1]));
+						stat[neighbor[aa][0]][neighbor[aa][1]]=SAFE;
 					}
 				}
-
-				// normalize
-				double norm = 1/m[j][mainId];
-				for (int k = mainId; k <= r*c; k++){
-					m[j][k] *= norm;
+			} 
+			//Kalo paling kanan == jumlah angka 1 pada neighbor
+			else{
+				for(int aa=0;aa<8;aa++){
+					if((0 <= neighbor[aa][0]) && (neighbor[aa][0] < r) && (0 <= neighbor[aa][1]) && (neighbor[aa][1] < c) && m[ii][toLinear(neighbor[aa][0],neighbor[aa][1])]==1)count++;
 				}
-
-				int cnt = 0;
-				for (int k = 0; k < r*c; k++){
-					if (Math.abs(m[j][k]) > EPS){
-						cnt++;
-					}
-				}
-
-				if (cnt == 1){
-					// nullify upper part
-					for (int j2 = j-1; j2 >= 0; j2--){
-						m[j2][r*c] -= m[j2][mainId] * m[j][r*c];
-						m[j2][mainId] = 0;
+				if(count==m[ii][cc-1]){
+					for(int aa=0;aa<8;aa++){
+						if((0 <= neighbor[aa][0]) && (neighbor[aa][0] < r) && (0 <= neighbor[aa][1]) && (neighbor[aa][1] < c) && m[ii][toLinear(neighbor[aa][0],neighbor[aa][1])]==1)stat[neighbor[aa][0]][neighbor[aa][1]]=MINE;
 					}
 				}
 			}
 		}
 	}
-
-	private void extractInfo(double[][] m){
-		
-	}
-
+	
 	private boolean isPerimeter(int i, int j, int[][] m){
 		if (stat[i][j] != UNKNOWN) return false;
 

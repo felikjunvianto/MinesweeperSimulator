@@ -72,7 +72,7 @@ public class MinesweeperSimulator extends JFrame {
 		field[1].setText("16");
 		field[2].setText("40");
 		field[3].setText("-1");
-		field[4].setText("500");
+		field[4].setText("100");
 
 		JPanel actionMenu = new JPanel();
 		actionMenu.setLayout(new GridLayout(3, 1));
